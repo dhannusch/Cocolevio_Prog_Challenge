@@ -15,7 +15,10 @@ class company:
 
 
 # Using insertion sort algorithm to sort the data by utility values
+# Insertion Sort will be the fastest because it is assumed that the
+# data will be nearly sorted
 # This sorting algorithm will sort the data from greatest to least
+
 def InsertionSort(companyUtil):
     
     for index in range(1,len(companyUtil)):
@@ -23,13 +26,27 @@ def InsertionSort(companyUtil):
         currentCompany = companyUtil[index]
         position = index
 
-        while position>0 and companyUtil[position-1].utility<currentValue:
+        while position>0 and companyUtil[position-1].utility>currentValue:
             companyUtil[position] = companyUtil[position-1]
             position = position - 1
 
         companyUtil[position] = currentCompany
+'''
 
+def InsertionSort(companyUtil):
+    
+    for index in range(len(companyUtil)-2,0,-1):
+        currentValue = companyUtil[index].utility
+        currentCompany = companyUtil[index]
+        position = index
 
+        while position<len(companyUtil) and companyUtil[position+1].utility<currentValue:
+            companyUtil[position] = companyUtil[position+1]
+            position = position + 1
+
+        companyUtil[position] = currentCompany
+
+'''
 
 
 def main():
