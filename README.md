@@ -8,3 +8,14 @@ In our Materials Marketplace we have many different companies all looking for th
 Please use the following as sample data:
 
 https://s3.amazonaws.com/cocolevio-public/InterviewQuestionExample.PNG
+
+
+Program Instructions:
+
+-Open the python file 'Cocolevio_Prog_Challenge.py'. 
+-Run the program
+-You will be prompted to enter the amount of total materials that the company can sell
+-Enter a whole number and press 'enter'
+(The current code handles any mistyping of a whole number)
+-You program will then display your results
+(The code and results are based on the sample data provided in the instructions above)
