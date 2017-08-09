@@ -14,23 +14,60 @@ class company:
         self.utility = price - amount
 
 
-# Using insertion sort algorithm to sort the data by utility values
-# Insertion Sort will be the fastest because it is assumed that the
-# data will be nearly sorted
+# Marketplace class holds methods for the sorting and maximization algorithm
+class marketplace:
 
-def InsertionSort(companyUtil):
-    
-    for index in range(1,len(companyUtil)):
-        currentValue = companyUtil[index].utility
-        currentCompany = companyUtil[index]
-        position = index
+    def __init__(self):
+        # Here are the variables for profit and the
+        # materials sold to be able to access later outside of the class
+        self.profit = 0
+        self.materials_sold = 0
 
-        while position>0 and companyUtil[position-1].utility>currentValue:
-            companyUtil[position] = companyUtil[position-1]
-            position = position - 1
-
-        companyUtil[position] = currentCompany
+           
+    def maximize(self,cList,mAmount):
+        # Parse through list to find which companies to sell to
+        # Sort this list of companies using Insertion Sort method
+        companyList = self.InsertionSort(cList)
         
+        material_amount = mAmount           # -> the amount of materials available to sell
+        done = False                        # -> flag to stop while loop
+        index = len(companyList)-1          # -> index starts at the end of the list where the greatest utility is
+        sell_to = []                        # -> sell_to list will store which companies we should sell to
+
+        while(not done and index>=0):
+            self.materials_sold += companyList[index].amount
+            if(self.materials_sold==material_amount):
+                self.profit += companyList[index].price
+                sell_to.append(companyList[index].name)
+                done = True
+            elif(self.materials_sold>material_amount):
+                self.materials_sold -= companyList[index].amount
+            else:
+                self.profit += companyList[index].price
+                sell_to.append(companyList[index].name)
+            index -= 1
+
+        return(sell_to)
+    
+
+    # Using insertion sort algorithm to sort the data by utility values
+    # Insertion Sort will be the fastest because it is assumed that the
+    # data will be nearly sorted
+    def InsertionSort(self,companyUtil):
+        
+        for index in range(1,len(companyUtil)):
+            currentValue = companyUtil[index].utility
+            currentCompany = companyUtil[index]
+            position = index
+
+            while position>0 and companyUtil[position-1].utility>currentValue:
+                companyUtil[position] = companyUtil[position-1]
+                position = position - 1
+
+            companyUtil[position] = currentCompany
+
+        return(companyUtil)
+
 
 
 def main():
@@ -49,55 +86,20 @@ def main():
     companyList.append(company("I",9,24))
     companyList.append(company("J",10,30))
 
-    # Displaying the data before sorting
-    '''
-    print("--Pre-Sorted Data--")
-    for c in companyList:
-        print("Company:",c.name," Amount:",c.amount," Price:",c.price," Util:",c.utility) 
-    print()
-    '''
-
     # Enter the total amount of material in supply
     material_amount = eval(input("Enter the total amount of materials to be sold: "))
     print()
-    
-    # Sort the data by utlity
-    InsertionSort(companyList)
 
-    # Displaying the data after sorting
-    '''
-    print("--Companies sorted by utility--")
-    for c in companyList:
-        print("Company:",c.name," Amount:",c.amount," Price:",c.price," Util:",c.utility) 
-    print()
-    '''
+    # Creates a marketplace object
+    MaterialMarket = marketplace()
 
-    # Parse through list to find which companies to sell to
-    materials_sold = 0
-    profit = 0
-    done = False
-    index = len(companyList)-1
-    sell_to = []
-
-    while(not done and index>=0):
-        materials_sold += companyList[index].amount
-        if(materials_sold==material_amount):
-            profit += companyList[index].price
-            sell_to.append(companyList[index].name)
-            done = True
-        elif(materials_sold>material_amount):
-            materials_sold -= companyList[index].amount
-        else:
-            profit += companyList[index].price
-            sell_to.append(companyList[index].name)
-        index -= 1
-        
+    # maximize function with parameters companyList and material_amount
+    # returns the results
+    results = MaterialMarket.maximize(companyList,material_amount)      
 
     # Display the results
-    print("Sell Materials To:",sell_to)
-    print("Materials Sold:",materials_sold," Profit:",profit)
-
-    
+    print("Sell Materials To Companies:",results)
+    print("Materials Sold:",MaterialMarket.materials_sold," Profit:",MaterialMarket.profit)
 
 
 main()
