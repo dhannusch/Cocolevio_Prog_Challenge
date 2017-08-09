@@ -70,6 +70,7 @@ class marketplace:
 
 
 
+
 def main():
 
     # Enter sample data in order to test the code by
@@ -87,8 +88,16 @@ def main():
     companyList.append(company("J",10,30))
 
     # Enter the total amount of material in supply
-    material_amount = eval(input("Enter the total amount of materials to be sold: "))
-    print()
+    # Using a try/catch loop to make sure input is valid
+    while True:
+        try:
+            material_amount = int(input("Enter the total amount of materials to be sold: "))
+            print()
+        except ValueError:
+            print("Please enter a whole number.")
+            continue
+        else:
+            break
 
     # Creates a marketplace object
     MaterialMarket = marketplace()
